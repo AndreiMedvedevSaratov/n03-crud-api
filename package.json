@@ -1,0 +1,13 @@
+{
+	"name": "node-crud-api",
+	"version": "1.0.0",
+	"description": "nodeJS application",
+	"main": "index.js",
+	"repository": "https://github.com/AndreiMedvedevSaratov/n03-crud-api.git",
+	"author": "AndreiMedvedevSaratov <andreiok@gmail.com>",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"start": "node src/index.js --username=GreatAndrei"
+	}
+}
