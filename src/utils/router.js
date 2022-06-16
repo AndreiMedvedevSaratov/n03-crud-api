@@ -1,4 +1,4 @@
-const METHODS = [
+const HTTP_METHODS = [
 	'GET',
 	'POST',
 	'PUT',
@@ -15,7 +15,22 @@ class Route {
 class Router {
 	constructor() {
 		this._routes = {};
-		METHODS.forEach(method => this._routes[method] = []);
+		HTTP_METHODS.forEach(method => {
+			this._routes[method] = [];
+			this[method.toLowerCase()] = (pathname, handler) => {
+				if (pathname.includes(':')) {
+					const regexpString = pathname.replace(/:(\w+)/g, '(.+)');
+					const regexp = new RegExp(regexpString, 'g');
+					const route = new Route(regexp, handler);
+
+					this._routes[method].push(route);
+				} else {
+					const route = new Route(pathname, handler);
+
+					this._routes[method].push(route);
+				}
+			};
+		});
 	}
 
 	_routeExists(pathname, method) {
@@ -23,41 +38,44 @@ class Router {
 			.filter(route => route.pathname === pathname).length > 0;
 	}
 
-	handle(req, res) {
-		const { url, method } = req;
+	_findRoute(pathname, method) {
+		const index = this._routes[method].findIndex(route => {
+			if (route.pathname instanceof RegExp) {
+				return pathname.match(route.pathname).length > 0;
+			} else {
+				return route.pathname === pathname;
+			}
+		});
 
-		if (this._routeExists(url, method)) {
-			const { handler } = this._routes[method];
-
-			handler(req, res);
+		if (index === -1) {
+			return null;
 		} else {
-			res.writeHead(404, { 'Content-Type': 'application/json' });
-			res.end(JSON.stringify({ message: '404 Route not found!' }));
+			return this._routes[method][index];
 		}
 	}
 
-	get(pathname, handler) {
-		const route = new Route(pathname, handler);
+	handle(req, res) {
+		const { url, method } = req;
 
-		this._routes['GET'].push(route);
-	}
+		const route = this._findRoute(url, method);
 
-	post(pathname, handler) {
-		const route = new Route(pathname, handler);
+		if (route) {
+			const { pathname, handler } = route;
 
-		this._routes['POST'].push(route);
-	}
+			if (pathname instanceof RegExp) {
 
-	put(pathname, handler) {
-		const route = new Route(pathname, handler);
+				const id = url.split('/').pop();
 
-		this._routes['PUT'].push(route);
-	}
+				req.params = { id };
 
-	delete(pathname, handler) {
-		const route = new Route(pathname, handler);
-
-		this._routes['DELETE'].push(route);
+				handler(req, res);
+			} else {
+				handler(req, res);
+			}
+		} else {
+			res.writeHead(404, { 'Content-Type': 'application/json' });
+			res.end(JSON.stringify({ message: '404 Route not found' }));
+		}
 	}
 };
 
