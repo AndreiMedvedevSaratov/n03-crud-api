@@ -45,8 +45,8 @@ class UserController {
 	async createUser(req, res) {
 		try {
 			const data = await getBodyData(req);
-			const { name, age, hobbies } = JSON.parse(data);
-			const allFieldsFilled = [name, age, hobbies]
+			const { username, age, hobbies } = JSON.parse(data);
+			const allFieldsFilled = [username, age, hobbies]
 				.filter(field => !field).length === 0;
 
 			if (!allFieldsFilled) {
@@ -54,7 +54,7 @@ class UserController {
 				res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.ALL_REQUIRED_FIELDS }));
 			}
 
-			const user = { name, age, hobbies };
+			const user = { username, age, hobbies };
 			const newUser = await create(user);
 			res.writeHead(HTTP_STATUS_CODES.CREATED, DEFAULT_HEADERS);
 			res.end(JSON.stringify(newUser));
@@ -81,10 +81,10 @@ class UserController {
 			}
 
 			const data = await getBodyData(req);
-			let { name, age, hobbies } = JSON.parse(data);
+			let { username, age, hobbies } = JSON.parse(data);
 
 			const userData = {
-				name: name || user.name,
+				username: username || user.username,
 				age: age || user.age,
 				hobbies: hobbies || user.hobbies,
 			};
