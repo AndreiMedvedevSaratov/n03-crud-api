@@ -8,12 +8,13 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"start": "node src/index.js --username=GreatAndrei"
+		"start:dev": "nodemon src/index.js"
 	},
 	"devDependencies": {
 		"jest": "^28.1.1"
 	},
 	"dependencies": {
+		"nodemon": "^2.0.16",
 		"uuid": "^8.3.2"
 	}
 }
