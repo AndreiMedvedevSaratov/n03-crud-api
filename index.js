@@ -1,6 +1,6 @@
 // Entry point here
 
-import { listen } from './server.js';
+import { listen } from './src/server.js';
 
 require('dotenv').config();
 
