@@ -29,7 +29,7 @@ class User {
 		return user;
 	}
 
-	async delete(id) {
+	async deleteUser(id) {
 		const index = findIndex(user => user.id === id);
 		const deletedUser = users[index];
 

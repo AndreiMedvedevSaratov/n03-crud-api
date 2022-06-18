@@ -1,9 +1,8 @@
-const HTTP_METHODS = [
-	'GET',
-	'POST',
-	'PUT',
-	'DELETE',
-];
+import { METHODS } from 'http';
+
+import { DEFAULT_HEADERS } from './constants.js';
+import { HTTP_RESPONSE_MESSAGES } from './constants.js';
+import { HTTP_STATUS_CODES } from './constants.js';
 
 class Route {
 	constructor(pathname, handler) {
@@ -15,7 +14,12 @@ class Route {
 class Router {
 	constructor() {
 		this._routes = {};
-		HTTP_METHODS.forEach(method => {
+		this._HTTP_METHODS = METHODS;
+		this._createRouterMethods();
+	}
+
+	_createRouterMethods() {
+		this._HTTP_METHODS.forEach(method => {
 			this._routes[method] = [];
 			this[method.toLowerCase()] = (pathname, handler) => {
 				if (pathname.includes(':')) {
@@ -33,15 +37,16 @@ class Router {
 		});
 	}
 
-	_routeExists(pathname, method) {
-		return this._routes[method]
-			.filter(route => route.pathname === pathname).length > 0;
-	}
-
 	_findRoute(pathname, method) {
 		const index = this._routes[method].findIndex(route => {
 			if (route.pathname instanceof RegExp) {
-				return pathname.match(route.pathname).length > 0;
+				const matches = pathname.match(route.pathname);
+
+				if (!matches) {
+					return false;
+				}
+
+				return matches.length > 0;
 			} else {
 				return route.pathname === pathname;
 			}
@@ -63,7 +68,6 @@ class Router {
 			const { pathname, handler } = route;
 
 			if (pathname instanceof RegExp) {
-
 				const id = url.split('/').pop();
 
 				req.params = { id };
@@ -73,8 +77,8 @@ class Router {
 				handler(req, res);
 			}
 		} else {
-			res.writeHead(404, { 'Content-Type': 'application/json' });
-			res.end(JSON.stringify({ message: '404 Route not found' }));
+			res.writeHead(HTTP_STATUS_CODES.NOT_FOUND, DEFAULT_HEADERS);
+			res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.ROUTE_NOT_FOUND }));
 		}
 	}
 };

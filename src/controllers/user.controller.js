@@ -1,8 +1,8 @@
-import { findAll, findById, create, update } from '../models/users.model';
-import { getBodyData, isUuid } from '../utils/helpers';
-import { DEFAULT_HEADERS } from '../utils/constants';
-import { HTTP_RESPONSE_MESSAGES } from '../utils/constants';
-import { HTTP_STATUS_CODES } from '../utils/constants';
+import { findAll, findById, create, update, deleteUser } from '../models/users.model.js';
+import { getBodyData, isUuid } from '../utils/helpers.js';
+import { DEFAULT_HEADERS } from '../utils/constants.js';
+import { HTTP_RESPONSE_MESSAGES } from '../utils/constants.js';
+import { HTTP_STATUS_CODES } from '../utils/constants.js';
 
 class UserController {
 
@@ -115,7 +115,7 @@ class UserController {
 				res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.USER_WITH_ID_NOT_FOUND(id) }));
 			}
 
-			delete(id);
+			user.deleteUser(id);
 
 			res.writeHead(HTTP_STATUS_CODES.NO_CONTENT, DEFAULT_HEADERS);
 			res.end();

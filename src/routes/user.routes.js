@@ -1,11 +1,12 @@
-import Router from '../utils/router';
-import { getUsers, createUser } from '../controllers/user.controller';
+import Router from '../utils/router.js';
+import { getUsers, getUser, createUser, updateUser, deleteUser } from '../controllers/user.controller.js';
 
 const router = new Router();
 
 router.get('/user', getUsers);
+router.get('/user/:id', getUser);
 router.post('/user', createUser);
-router.put('/user', () => { console.log('update some user'); });
-router.delete('/user', () => { console.log('delete some user'); });
+router.put('/user/:id', updateUser);
+router.delete('/user/:id', deleteUser);
 
 export default router;
