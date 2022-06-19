@@ -92,11 +92,11 @@ export async function deleteUser(
 
     if (!foundUser) return forwardJson(404, { message: 'User not found' }, res);
 
+    forwardJson(204, { message: `User ${id} deleted` }, res);
+
     await User.deleteById(id);
 
-    forwardJson(204, { message: `User ${id} deleted` }, res)
-
   } catch (error) {
-    forwardJson(500, { message: 'Oops, something went wrong.' }, res)
+    forwardJson(500, { message: 'Oops, something went wrong.' }, res);
   }
 }

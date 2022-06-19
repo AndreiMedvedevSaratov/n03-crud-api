@@ -8,7 +8,8 @@
 	"scripts": {
 		"start:dev": "nodemon -w src src/index.ts",
 		"start:prod": "tsc && node dist/index.js",
-		"test": "jest --forceExit"
+		"test": "jest --forceExit",
+		"start:multi": "nodemon -w src src/multi.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.42",
