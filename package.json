@@ -6,7 +6,8 @@
 	"repository": "https://github.com/AndreiMedvedevSaratov/n03-crud-api.git",
 	"author": "AndreiMedvedevSaratov <andreiok@gmail.com>",
 	"scripts": {
-		"start:dev": "nodemon -w src src/index.ts"
+		"start:dev": "nodemon -w src src/index.ts",
+		"start:prod": "tsc && node dist/index.js"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.42",
