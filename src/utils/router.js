@@ -60,25 +60,36 @@ class Router {
 	}
 
 	handle(req, res) {
-		const { url, method } = req;
+		try {
+			if (!req.url) return
 
-		const route = this._findRoute(url, method);
+			if (req.url === '/api/users') {
+				if (req.method === 'GET') return getUsers(req, res)
 
-		if (route) {
-			const { pathname, handler } = route;
-
-			if (pathname instanceof RegExp) {
-				const id = url.split('/').pop();
-
-				req.params = { id };
-
-				handler(req, res);
-			} else {
-				handler(req, res);
+				if (req.method === 'POST') return createUser(req, res)
 			}
-		} else {
-			res.writeHead(HTTP_STATUS_CODES.NOT_FOUND, DEFAULT_HEADERS);
-			res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.ROUTE_NOT_FOUND }));
+
+			if (/^\/api\/users\/[\w-]+$/.test(req.url)) {
+				const id = req.url.split('/')[3]
+
+				if (!isUUID(id)) return sendJSON(400, { message: 'invalid id' }, res)
+
+				if (req.method === 'GET') return getUser(req, res, id)
+
+				if (req.method === 'PUT') return updateUser(req, res, id)
+
+				if (req.method === 'DELETE') return deleteUser(req, res, id)
+			}
+
+			sendJSON(404, { message: 'not found' }, res)
+		} catch (error) {
+			sendJSON(
+				500,
+				{
+					message: 'Oops, something went wrong. Try to refresh this page.',
+				},
+				res
+			)
 		}
 	}
 };

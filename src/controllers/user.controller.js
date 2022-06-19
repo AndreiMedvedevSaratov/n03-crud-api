@@ -1,4 +1,4 @@
-import User from '../models/users.model.js';
+import User from '../models/user.model.js';
 import { getBodyData, isUuid } from '../utils/helpers.js';
 import { DEFAULT_HEADERS } from '../utils/constants.js';
 import { HTTP_RESPONSE_MESSAGES } from '../utils/constants.js';
