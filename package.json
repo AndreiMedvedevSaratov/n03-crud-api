@@ -7,7 +7,8 @@
 	"author": "AndreiMedvedevSaratov <andreiok@gmail.com>",
 	"scripts": {
 		"start:dev": "nodemon -w src src/index.ts",
-		"start:prod": "tsc && node dist/index.js"
+		"start:prod": "tsc && node dist/index.js",
+		"test": "jest --forceExit"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.42",
@@ -18,7 +19,12 @@
 	},
 	"dependencies": {
 		"@types/dotenv": "^8.2.0",
+		"@types/jest": "^28.1.2",
+		"@types/supertest": "^2.0.12",
 		"dotenv": "^16.0.1",
+		"jest": "^28.1.1",
+		"supertest": "^6.2.3",
+		"ts-jest": "^28.0.5",
 		"uuid": "^8.3.2"
 	}
 }
