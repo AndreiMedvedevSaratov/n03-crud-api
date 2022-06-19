@@ -1,4 +1,4 @@
-import { findAll, findById, create, update, deleteUser } from '../models/users.model.js';
+import User from '../models/users.model.js';
 import { getBodyData, isUuid } from '../utils/helpers.js';
 import { DEFAULT_HEADERS } from '../utils/constants.js';
 import { HTTP_RESPONSE_MESSAGES } from '../utils/constants.js';
@@ -27,7 +27,7 @@ class UserController {
 				res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.USER_ID_IN_UUID }));
 			}
 
-			const user = await findById(id);
+			const user = await User.findById(id);
 
 			if (!user) {
 				res.writeHead(HTTP_STATUS_CODES.NOT_FOUND, DEFAULT_HEADERS);
@@ -55,7 +55,7 @@ class UserController {
 			}
 
 			const user = { username, age, hobbies };
-			const newUser = await create(user);
+			const newUser = await User.create(user);
 			res.writeHead(HTTP_STATUS_CODES.CREATED, DEFAULT_HEADERS);
 			res.end(JSON.stringify(newUser));
 		} catch (err) {
@@ -89,7 +89,7 @@ class UserController {
 				hobbies: hobbies || user.hobbies,
 			};
 
-			const updatedUser = await update(id, userData);
+			const updatedUser = await User.update(id, userData);
 
 			res.writeHead(HTTP_STATUS_CODES.OK, DEFAULT_HEADERS);
 			res.end(JSON.stringify(updatedUser));
@@ -108,14 +108,14 @@ class UserController {
 				res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.USER_ID_IN_UUID }));
 			}
 
-			const user = await findById(id);
+			const user = await User.findById(id);
 
 			if (!user) {
 				res.writeHead(HTTP_STATUS_CODES.NOT_FOUND, DEFAULT_HEADERS);
 				res.end(JSON.stringify({ message: HTTP_RESPONSE_MESSAGES.USER_WITH_ID_NOT_FOUND(id) }));
 			}
 
-			user.deleteUser(id);
+			User.deleteUser(id);
 
 			res.writeHead(HTTP_STATUS_CODES.NO_CONTENT, DEFAULT_HEADERS);
 			res.end();

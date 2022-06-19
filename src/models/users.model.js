@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import users, { find, push, findIndex, splice } from '../db/users.json';
+const users = await import('../db/users.json', {
+	assert: { type: 'json' }
+});
 
 class User {
 	async findAll() {

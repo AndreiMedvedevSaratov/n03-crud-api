@@ -14,6 +14,7 @@
 		"jest": "^28.1.1"
 	},
 	"dependencies": {
+		"dotenv": "^16.0.1",
 		"nodemon": "^2.0.16",
 		"uuid": "^8.3.2"
 	}

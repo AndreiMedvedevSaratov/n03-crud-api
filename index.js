@@ -1,11 +1,12 @@
 // Entry point here
 
-import { listen } from './src/server.js';
+import server from './src/server.js';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`Server is running on port: ${PORT}`);
 });
